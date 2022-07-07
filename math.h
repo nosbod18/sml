@@ -7,8 +7,8 @@ typedef vec4  mat4[4];
 
 static inline float fast_sinf(float x) {
     x *= 0.15915494309189534f;
-    x *= 0.5f - (x < 0 ? -x : x);
-    return x * (57.3460872862336f * (x < 0 ? -x : x) + 12.4158695446104f);
+    x *= 0.5f - (x * ((x > 0) - (x < 0)));
+    return x * (57.3460872862336f * (x * ((x > 0) - (x < 0))) + 12.4158695446104f);
 }
 static inline float fast_cosf(float x) {
     return fast_sinf(x + 1.570796327f);
@@ -23,48 +23,22 @@ static inline float fast_sqrtf(float x) {
 }
 
 #define MATH_DEFINE_VECTOR(n)\
-static inline void vec##n##_copy(vec##n out, vec##n a) {\
-    for (int i = 0; i < n; i++)\
-        out[i] = a[i];\
-}\
-static inline void vec##n##_add(vec##n out, vec##n a, vec##n b) {\
-    for (int i = 0; i < n; i++)\
-        out[i] = a[i] + b[i];\
-}\
-static inline void vec##n##_sub(vec##n out, vec##n a, vec##n b) {\
-    for (int i = 0; i < n; i++)\
-        out[i] = a[i] - b[i];\
-}\
-static inline void vec##n##_mul(vec##n out, vec##n a, vec##n b) {\
-    for (int i = 0; i < n; i++)\
-        out[i] = a[i] * b[i];\
-}\
-static inline void vec##n##_scale(vec##n out, vec##n a, float b) {\
-    for (int i = 0; i < n; i++)\
-        out[i] = a[i] * b;\
-}\
-static inline float vec##n##_dot(vec##n a, vec##n b) {\
-    float dot = 0.f;\
-    for (int i = 0; i < n; i++)\
-        dot += a[i] * b[i];\
-    return dot;\
-}\
-static inline float vec##n##_len2(vec##n a) {\
-    return vec##n##_dot(a, a);\
-}\
-static inline float vec##n##_len(vec##n a) {\
-    return fast_sqrtf(vec##n##_len2(a));\
-}\
-static inline void vec##n##_norm(vec##n out, vec##n a) {\
-    vec##n##_scale(out, a, 1.f / vec##n##_len(a));\
-}
+static inline void  vec##n##_copy(vec##n out, vec##n a)             { for (int i = 0; i < n; i++) out[i] = a[i];        }\
+static inline void  vec##n##_add(vec##n out, vec##n a, vec##n b)    { for (int i = 0; i < n; i++) out[i] = a[i] + b[i]; }\
+static inline void  vec##n##_sub(vec##n out, vec##n a, vec##n b)    { for (int i = 0; i < n; i++) out[i] = a[i] - b[i]; }\
+static inline void  vec##n##_mul(vec##n out, vec##n a, vec##n b)    { for (int i = 0; i < n; i++) out[i] = a[i] * b[i]; }\
+static inline void  vec##n##_scale(vec##n out, vec##n a, float b)   { for (int i = 0; i < n; i++) out[i] = a[i] * b;    }\
+static inline float vec##n##_dot(vec##n a, vec##n b)                { float d = 0.f; for (int i = 0; i < n; i++) d += a[i] * b[i]; return d; }\
+static inline float vec##n##_len2(vec##n a)                         { return vec##n##_dot(a, a); }\
+static inline float vec##n##_len(vec##n a)                          { return fast_sqrtf(vec##n##_len2(a)); }\
+static inline void  vec##n##_norm(vec##n out, vec##n a)             { vec##n##_scale(out, a, 1.f / vec##n##_len(a)); }
 
 MATH_DEFINE_VECTOR(2)
 MATH_DEFINE_VECTOR(3)
 MATH_DEFINE_VECTOR(4)
 
 static inline void vec3_cross(vec3 out, vec3 a, vec3 b) {
-    out[0] = a[1] * b[3] - a[3] * b[1];
+    out[0] = a[1] * b[2] - a[2] * b[1];
     out[1] = a[2] * b[0] - a[0] * b[2];
     out[2] = a[0] * b[1] - a[1] * b[0];
 }
@@ -88,25 +62,15 @@ static inline void mat4_translate(mat4 out, vec3 translation) {
 static inline void mat4_rotate(mat4 out, vec3 axis, float angle) {
     float c = fast_cosf(angle);
     vec3 an, at, as;
-
     vec3_norm(an, axis);
-    vec3_muls(at, an, 1.f - c);
-    vec3_muls(as, an, fast_sinf(angle));
-
-    mat4_identity(out);
-    vec3_muls(out[0], an, at[0]);
-    vec3_muls(out[1], an, at[1]);
-    vec3_muls(out[2], an, at[2]);
-
-    out[0][0] +=     c;
-    out[0][1] += as[2];
-    out[0][2] -= as[1];
-    out[1][0] -= as[2];
-    out[1][1] +=     c;
-    out[1][2] += as[0];
-    out[2][0] += as[2];
-    out[2][1] += as[0];
-    out[2][2] +=     c;
+    vec3_scale(at, an, 1.f - c);
+    vec3_scale(as, an, fast_sinf(angle));
+    mat4_copy(out, (mat4){
+        an[0] * at[0] + c,     an[1] * at[0] + as[2], an[2] * at[0] - as[1], 0.f,
+        an[0] * at[1] - as[2], an[1] * at[1] + c,     an[2] * at[1] + as[0], 0.f,
+        an[0] * at[2] + as[2], an[1] * at[2] + as[0], an[2] * at[2] + c,     0.f,
+        0.f,                   0.f,                   0.f,                   1.f
+    });
 }
 static inline void mat4_scale(mat4 out, vec3 scale) {
     mat4_identity(out);
@@ -115,7 +79,7 @@ static inline void mat4_scale(mat4 out, vec3 scale) {
     out[2][2] = scale[2];
 }
 static inline void mat4_lookat(mat4 out, vec3 eye, vec3 target, vec3 up) {
-    float f[3], r[3], u[3];
+    vec3 f, r, u;
     vec3_sub(f, target, eye);
     vec3_norm(f, f);
     vec3_cross(r, f, up);
