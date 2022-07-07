@@ -1,7 +1,13 @@
-# math.h - Minimal math library
+# math - Minimal math library
 
 `math.h` is a very minimal vector and matrix math library that only defines the essential functions for
 computer graphics and games.
+
+`smath.h` has almost the same API as `math.h`, except the types are structs and the functions return
+structs instead of taking an `out` parameter. `smath.h` also doesn't have the *\*_copy* funtions.
+
+Since the types are named the same in `math.h` and `smath.h`, only one of the files is meant to be
+used.
 
 ## API
 ```c
