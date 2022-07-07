@@ -9,7 +9,7 @@ structs instead of taking an `out` parameter. `smath.h` also doesn't have the *\
 Since the types are named the same in `math.h` and `smath.h`, only one of the files is meant to be
 used.
 
-## API
+ API
 ```c
 typedef float vec2[2];
 typedef float vec3[3];
@@ -21,15 +21,15 @@ static inline float fast_cosf           (float x);
 static inline float fast_tanf           (float x);
 static inline float fast_sqrtf          (float x);
 
-static inline void  vec##n##_copy       (vec##n out, vec##n a);
-static inline void  vec##n##_add        (vec##n out, vec##n a, vec##n b);
-static inline void  vec##n##_sub        (vec##n out, vec##n a, vec##n b);
-static inline void  vec##n##_mul        (vec##n out, vec##n a, vec##n b);
-static inline void  vec##n##_scale      (vec##n out, vec##n a, float b);
-static inline float vec##n##_dot        (vec##n a, vec##n b);
-static inline float vec##n##_len2       (vec##n a);
-static inline float vec##n##_len        (vec##n a);
-static inline void  vec##n##_norm       (vec##n out, vec##n a);
+static inline void  vecN_copy           (vecN out, vecN a);
+static inline void  vecN_add            (vecN out, vecN a, vecN b);
+static inline void  vecN_sub            (vecN out, vecN a, vecN b);
+static inline void  vecN_mul            (vecN out, vecN a, vecN b);
+static inline void  vecN_scale          (vecN out, vecN a, float b);
+static inline float vecN_dot            (vecN a, vecN b);
+static inline float vecN_len2           (vecN a);
+static inline float vecN_len            (vecN a);
+static inline void  vecN_norm           (vecN out, vecN a);
 
 static inline void  vec3_cross          (vec3 out, vec3 a, vec3 b);
 
