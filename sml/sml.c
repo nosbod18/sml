@@ -1,4 +1,4 @@
-#include "math.h"
+#include "sml.h"
 
 static float FastSinf(float x) {
     x *= 0.15915494309189534f;
