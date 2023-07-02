@@ -1,190 +1,225 @@
+///////////////////////////////////////////////////////////////////////////////
+///                                                                         ///
+///                                Interface                                ///
+///                                                                         ///
+///////////////////////////////////////////////////////////////////////////////
+
 #pragma once
 
-typedef struct SmlVec2 {
+///////////////////////////////////////////////////////////////////////////////
+/// Types
+
+typedef struct sml_vec2_t {
     float x, y;
-} SmlVec2;
+} sml_vec2_t;
 
-typedef struct SmlVec3 {
+typedef struct sml_vec3_t {
     float x, y, z;
-} SmlVec3;
+} sml_vec3_t;
 
-typedef struct SmlVec4 {
+typedef struct sml_vec4_t {
     float x, y, z, w;
-} SmlVec4;
+} sml_vec4_t;
 
-typedef struct SmlMat4 {
+typedef struct sml_mat4_t {
     float m00, m01, m02, m03;
     float m10, m11, m12, m13;
     float m20, m21, m22, m23;
     float m30, m31, m32, m33;
-} SmlMat4;
+} sml_mat4_t;
 
-float   SmlSinf             (float x);
-float   SmlCosf             (float x);
-float   SmlTanf             (float x);
-float   SmlSqrtf            (float x);
+///////////////////////////////////////////////////////////////////////////////
+/// Functions / Macros
 
-SmlVec2 SmlAddVec2          (SmlVec2 a, SmlVec2 b);
-SmlVec2 SmlSubVec2          (SmlVec2 a, SmlVec2 b);
-SmlVec2 SmlMulVec2          (SmlVec2 a, SmlVec2 b);
-SmlVec2 SmlScaleVec2        (SmlVec2 a, float b);
-float   SmlDotVec2          (SmlVec2 a, SmlVec2 b);
-float   SmlLengthVec2       (SmlVec2 a);
-SmlVec2 SmlNormalizeVec2    (SmlVec2 a);
+#define     SML_MIN(x, y)           ((x) < (y) ? (x) : (y))
+#define     SML_MAX(x, y)           ((x) > (y) ? (x) : (y))
+#define     SML_CLAMP(x, lo, hi)    (SML_MAX(SML_MIN(hi, x), lo))
+#define     SML_ABS(x)              ((x) < 0 ? -(x) : (x))
+#define     SML_SIGN(x)             (((x) > 0) - ((x) < 0))
 
-SmlVec3 SmlAddVec3          (SmlVec3 a, SmlVec3 b);
-SmlVec3 SmlSubVec3          (SmlVec3 a, SmlVec3 b);
-SmlVec3 SmlMulVec3          (SmlVec3 a, SmlVec3 b);
-SmlVec3 SmlScaleVec3        (SmlVec3 a, float b);
-float   SmlDotVec3          (SmlVec3 a, SmlVec3 b);
-float   SmlLengthVec3       (SmlVec3 a);
-SmlVec3 SmlNormalizeVec3    (SmlVec3 a);
-SmlVec3 SmlCrossVec3        (SmlVec3 a, SmlVec3 b);
+float       sml_sinf                (float x);
+float       sml_cosf                (float x);
+float       sml_tanf                (float x);
+float       sml_sqrtf               (float x);
 
-SmlVec4 SmlAddVec4          (SmlVec4 a, SmlVec4 b);
-SmlVec4 SmlSubVec4          (SmlVec4 a, SmlVec4 b);
-SmlVec4 SmlMulVec4          (SmlVec4 a, SmlVec4 b);
-SmlVec4 SmlScaleVec4        (SmlVec4 a, float b);
-float   SmlDotVec4          (SmlVec4 a, SmlVec4 b);
-float   SmlLengthVec4       (SmlVec4 a);
-SmlVec4 SmlNormalizeVec4    (SmlVec4 a);
+sml_vec2_t  sml_vec2_add            (sml_vec2_t a, sml_vec2_t b);
+sml_vec2_t  sml_vec2_sub            (sml_vec2_t a, sml_vec2_t b);
+sml_vec2_t  sml_vec2_mul            (sml_vec2_t a, sml_vec2_t b);
+sml_vec2_t  sml_vec2_scale          (sml_vec2_t a, float b);
+float       sml_vec2_dot            (sml_vec2_t a, sml_vec2_t b);
+float       sml_vec2_length         (sml_vec2_t a);
+sml_vec2_t  sml_vec2_normalize      (sml_vec2_t a);
 
-SmlMat4 SmlIdentityMat4     (void);
-SmlMat4 SmlMulMat4          (SmlMat4 a, SmlMat4 b);
+sml_vec3_t  sml_vec3_add            (sml_vec3_t a, sml_vec3_t b);
+sml_vec3_t  sml_vec3_sub            (sml_vec3_t a, sml_vec3_t b);
+sml_vec3_t  sml_vec3_mul            (sml_vec3_t a, sml_vec3_t b);
+sml_vec3_t  sml_vec3_scale          (sml_vec3_t a, float b);
+float       sml_vec3_dot            (sml_vec3_t a, sml_vec3_t b);
+float       sml_vec3_length         (sml_vec3_t a);
+sml_vec3_t  sml_vec3_normalize      (sml_vec3_t a);
+sml_vec3_t  sml_vec3_cross          (sml_vec3_t a, sml_vec3_t b);
 
-SmlMat4 SmlTranslate        (SmlVec3 translation);
-SmlMat4 SmlRotate           (SmlVec3 axis, float angle);
-SmlMat4 SmlScale            (SmlVec3 scale);
-SmlMat4 SmlLookAt           (SmlVec3 eye, SmlVec3 target, SmlVec3 up);
-SmlMat4 SmlPerspective      (float fov, float aspect, float near, float far);
-SmlMat4 SmlOrthographic     (float left, float right, float bottom, float top, float near, float far);
+sml_vec4_t  sml_vec4_add            (sml_vec4_t a, sml_vec4_t b);
+sml_vec4_t  sml_vec4_sub            (sml_vec4_t a, sml_vec4_t b);
+sml_vec4_t  sml_vec4_mul            (sml_vec4_t a, sml_vec4_t b);
+sml_vec4_t  sml_vec4_scale          (sml_vec4_t a, float b);
+float       sml_vec4_dot            (sml_vec4_t a, sml_vec4_t b);
+float       sml_vec4_length         (sml_vec4_t a);
+sml_vec4_t  sml_vec4_normalize      (sml_vec4_t a);
 
+sml_mat4_t  sml_mat4_identity       (void);
+sml_mat4_t  sml_mat4_mul            (sml_mat4_t a, sml_mat4_t b);
 
-#if defined(SML_IMPLEMENTATION)
+sml_mat4_t  sml_translate           (sml_vec3_t translation);
+sml_mat4_t  sml_rotate              (sml_vec3_t axis, float angle);
+sml_mat4_t  sml_scale               (sml_vec3_t scale);
+sml_mat4_t  sml_lookat              (sml_vec3_t eye, sml_vec3_t target, sml_vec3_t up);
+sml_mat4_t  sml_perspective         (float fov, float aspect, float near, float far);
+sml_mat4_t  sml_orthographic        (float left, float right, float bottom, float top, float near, float far);
 
-float SmlSinf(float x) {
+///////////////////////////////////////////////////////////////////////////////
+///                                                                         ///
+///                             Implementation                              ///
+///                                                                         ///
+///////////////////////////////////////////////////////////////////////////////
+
+#if defined(SML_IMPL)
+
+float sml_sinf(float x) {
     x *= 0.15915494309189534f;
     x *= 0.5f - (x * ((x > 0) - (x < 0)));
     return x * (57.3460872862336f * (x * ((x > 0) - (x < 0))) + 12.4158695446104f);
 }
 
-float SmlCosf(float x) {
-    return SmlSinf(x + 1.570796327f);
+float sml_cosf(float x) {
+    return sml_sinf(x + 1.570796327f);
 }
 
-float SmlTanf(float x) {
-    return SmlSinf(x) / SmlCosf(x);
+float sml_tanf(float x) {
+    return sml_sinf(x) / sml_cosf(x);
 }
 
-float SmlSqrtf(float x) {
+float sml_sqrtf(float x) {
     int y = ((*(int *)&x - 0x00800000) >> 1) + 0x20000000;
     float z = *(float *)&y;
     return (x / z + z) * 0.5f;
 }
 
-SmlVec2 SmlAddVec2(SmlVec2 a, SmlVec2 b) {
-    return (SmlVec2){a.x + b.x, a.y + b.y};
+sml_vec2_t sml_vec2_add(sml_vec2_t a, sml_vec2_t b) {
+    return (sml_vec2_t){a.x + b.x, a.y + b.y};
 }
 
-SmlVec2 SmlSubVec2(SmlVec2 a, SmlVec2 b) {
-    return (SmlVec2){a.x - b.x, a.y - b.y};
+sml_vec2_t sml_vec2_sub(sml_vec2_t a, sml_vec2_t b) {
+    return (sml_vec2_t){a.x - b.x, a.y - b.y};
 }
 
-SmlVec2 SmlMulVec2(SmlVec2 a, SmlVec2 b) {
-    return (SmlVec2){a.x * b.x, a.y * b.y};
+sml_vec2_t sml_vec2_mul(sml_vec2_t a, sml_vec2_t b) {
+    return (sml_vec2_t){a.x * b.x, a.y * b.y};
 }
 
-SmlVec2 SmlScaleVec2(SmlVec2 a, float b) {
-    return (SmlVec2){a.x * b, a.y * b};
+sml_vec2_t sml_vec2_scale(sml_vec2_t a, float b) {
+    return (sml_vec2_t){a.x * b, a.y * b};
 }
 
-float SmlDotVec2(SmlVec2 a, SmlVec2 b) {
+float sml_vec2_dot(sml_vec2_t a, sml_vec2_t b) {
     return a.x * b.x + a.y * b.y;
 }
 
-float SmlLengthVec2(SmlVec2 a) {
-    return SmlSqrtf(SmlDotVec2(a, a));
+float sml_vec2_length(sml_vec2_t a) {
+    return sml_sqrtf(sml_vec2_dot(a, a));
 }
 
-SmlVec2 SmlNormalizeVec2(SmlVec2 a) {
-    return SmlScaleVec2(a, 1.f / SmlLengthVec2(a));
+sml_vec2_t sml_vec2_normalize(sml_vec2_t a) {
+    return sml_vec2_scale(a, 1.f / sml_vec2_length(a));
 }
 
-SmlVec3 SmlAddVec3(SmlVec3 a, SmlVec3 b) {
-    return (SmlVec3){a.x + b.x, a.y + b.y, a.z + b.z};
+sml_vec3_t sml_vec3_add(sml_vec3_t a, sml_vec3_t b) {
+    return (sml_vec3_t){a.x + b.x, a.y + b.y, a.z + b.z};
 }
 
-SmlVec3 SmlSubVec3(SmlVec3 a, SmlVec3 b) {
-    return (SmlVec3){a.x - b.x, a.y - b.y, a.z - b.z};
+sml_vec3_t sml_vec3_sub(sml_vec3_t a, sml_vec3_t b) {
+    return (sml_vec3_t){a.x - b.x, a.y - b.y, a.z - b.z};
 }
 
-SmlVec3 SmlMulVec3(SmlVec3 a, SmlVec3 b) {
-    return (SmlVec3){a.x * b.x, a.y * b.y, a.z * b.z};
+sml_vec3_t sml_vec3_mul(sml_vec3_t a, sml_vec3_t b) {
+    return (sml_vec3_t){a.x * b.x, a.y * b.y, a.z * b.z};
 }
 
-SmlVec3 SmlScaleVec3(SmlVec3 a, float b) {
-    return (SmlVec3){a.x * b,   a.y * b,   a.z * b  };
+sml_vec3_t sml_vec3_scale(sml_vec3_t a, float b) {
+    return (sml_vec3_t){a.x * b,   a.y * b,   a.z * b  };
 }
 
-float SmlDotVec3(SmlVec3 a, SmlVec3 b) {
+float sml_vec3_dot(sml_vec3_t a, sml_vec3_t b) {
     return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
-float SmlLengthVec3(SmlVec3 a) {
-    return SmlSqrtf(SmlDotVec3(a, a));
+float sml_vec3_length(sml_vec3_t a) {
+    return sml_sqrtf(sml_vec3_dot(a, a));
 }
 
-SmlVec3 SmlNormalizeVec3(SmlVec3 a) {
-    return SmlScaleVec3(a, 1.f / SmlLengthVec3(a));
+sml_vec3_t sml_vec3_normalize(sml_vec3_t a) {
+    return sml_vec3_scale(a, 1.f / sml_vec3_length(a));
 }
 
-SmlVec3 SmlCrossVec3(SmlVec3 a, SmlVec3 b) {
-    return (SmlVec3){ a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x};
+sml_vec3_t sml_vec3_cross(sml_vec3_t a, sml_vec3_t b) {
+    return (sml_vec3_t){ a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x};
 }
 
-SmlVec4 SmlAddVec4(SmlVec4 a, SmlVec4 b) {
-    return (SmlVec4){a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w};
+sml_vec4_t sml_vec4_add(sml_vec4_t a, sml_vec4_t b) {
+    return (sml_vec4_t){a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w};
 }
 
-SmlVec4 SmlSubVec4(SmlVec4 a, SmlVec4 b) {
-    return (SmlVec4){a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w};
+sml_vec4_t sml_vec4_sub(sml_vec4_t a, sml_vec4_t b) {
+    return (sml_vec4_t){a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w};
 }
 
-SmlVec4 SmlMulVec4(SmlVec4 a, SmlVec4 b) {
-    return (SmlVec4){a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w};
+sml_vec4_t sml_vec4_mul(sml_vec4_t a, sml_vec4_t b) {
+    return (sml_vec4_t){a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w};
 }
 
-SmlVec4 SmlScaleVec4(SmlVec4 a, float b) {
-    return (SmlVec4){a.x * b,   a.y * b,   a.z * b,   a.w * b  };
+sml_vec4_t sml_vec4_scale(sml_vec4_t a, float b) {
+    return (sml_vec4_t){a.x * b,   a.y * b,   a.z * b,   a.w * b  };
 }
 
-float SmlDotVec4(SmlVec4 a, SmlVec4 b) {
+float sml_vec4_dot(sml_vec4_t a, sml_vec4_t b) {
     return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
 }
 
-float SmlLengthVec4(SmlVec4 a) {
-    return SmlSqrtf(SmlDotVec4(a, a));
+float sml_vec4_length(sml_vec4_t a) {
+    return sml_sqrtf(sml_vec4_dot(a, a));
 }
 
-SmlVec4 SmlNormalizeVec4(SmlVec4 a) {
-    return SmlScaleVec4(a, 1.f / SmlLengthVec4(a));
+sml_vec4_t sml_vec4_normalize(sml_vec4_t a) {
+    return sml_vec4_scale(a, 1.f / sml_vec4_length(a));
 }
 
-SmlMat4 SmlIdentityMat4(void) {
-    return (SmlMat4){.m00 = 1.f, .m11 = 1.f, .m22 = 1.f, .m33 = 1.f};
+sml_mat4_t sml_mat4_identity(void) {
+    return (sml_mat4_t){.m00 = 1.f, .m11 = 1.f, .m22 = 1.f, .m33 = 1.f};
 }
 
-SmlMat4 SmlMulMat4(SmlMat4 a, SmlMat4 b) {
-    return (SmlMat4){
-        a.m00 * b.m00, a.m01 * b.m01, a.m02 * b.m02, a.m03 * b.m03,
-        a.m10 * b.m10, a.m11 * b.m11, a.m12 * b.m12, a.m13 * b.m13,
-        a.m20 * b.m20, a.m21 * b.m21, a.m22 * b.m22, a.m23 * b.m23,
-        a.m30 * b.m30, a.m31 * b.m31, a.m32 * b.m32, a.m33 * b.m33,
+sml_mat4_t sml_mat4_mul(sml_mat4_t a, sml_mat4_t b) {
+    return (sml_mat4_t){
+        a.m00 * b.m00 + a.m10 * b.m01 + a.m20 * b.m02 + a.m30 * b.m03,
+        a.m01 * b.m00 + a.m11 * b.m01 + a.m21 * b.m02 + a.m31 * b.m03,
+        a.m02 * b.m00 + a.m12 * b.m01 + a.m22 * b.m02 + a.m32 * b.m03,
+        a.m03 * b.m00 + a.m13 * b.m01 + a.m23 * b.m02 + a.m33 * b.m03,
+        a.m00 * b.m10 + a.m10 * b.m11 + a.m20 * b.m12 + a.m30 * b.m13,
+        a.m01 * b.m10 + a.m11 * b.m11 + a.m21 * b.m12 + a.m31 * b.m13,
+        a.m02 * b.m10 + a.m12 * b.m11 + a.m22 * b.m12 + a.m32 * b.m13,
+        a.m03 * b.m10 + a.m13 * b.m11 + a.m23 * b.m12 + a.m33 * b.m13,
+        a.m00 * b.m20 + a.m10 * b.m21 + a.m20 * b.m22 + a.m30 * b.m23,
+        a.m01 * b.m20 + a.m11 * b.m21 + a.m21 * b.m22 + a.m31 * b.m23,
+        a.m02 * b.m20 + a.m12 * b.m21 + a.m22 * b.m22 + a.m32 * b.m23,
+        a.m03 * b.m20 + a.m13 * b.m21 + a.m23 * b.m22 + a.m33 * b.m23,
+        a.m00 * b.m30 + a.m10 * b.m31 + a.m20 * b.m32 + a.m30 * b.m33,
+        a.m01 * b.m30 + a.m11 * b.m31 + a.m21 * b.m32 + a.m31 * b.m33,
+        a.m02 * b.m30 + a.m12 * b.m31 + a.m22 * b.m32 + a.m32 * b.m33,
+        a.m03 * b.m30 + a.m13 * b.m31 + a.m23 * b.m32 + a.m33 * b.m33,
     };
 }
 
-SmlMat4 SmlTranslate(SmlVec3 translation) {
-    return (SmlMat4){
+sml_mat4_t sml_translate(sml_vec3_t translation) {
+    return (sml_mat4_t){
         .m30 = translation.x,
         .m31 = translation.y,
         .m32 = translation.z,
@@ -192,12 +227,12 @@ SmlMat4 SmlTranslate(SmlVec3 translation) {
     };
 }
 
-SmlMat4 SmlRotate(SmlVec3 axis, float angle) {
-    float c = SmlCosf(angle);
-    SmlVec3 an = SmlNormalizeVec3(axis);
-    SmlVec3 at = SmlScaleVec3(an, 1.f - c);
-    SmlVec3 as = SmlScaleVec3(an, SmlSinf(angle));
-    return (SmlMat4){
+sml_mat4_t sml_rotate(sml_vec3_t axis, float angle) {
+    float c = sml_cosf(angle);
+    sml_vec3_t an = sml_vec3_normalize(axis);
+    sml_vec3_t at = sml_vec3_scale(an, 1.f - c);
+    sml_vec3_t as = sml_vec3_scale(an, sml_sinf(angle));
+    return (sml_mat4_t){
         an.x * at.x + c,    an.y * at.x + as.z, an.z * at.x - as.y, 0.f,
         an.x * at.y - as.z, an.y * at.y + c,    an.z * at.y + as.x, 0.f,
         an.x * at.z + as.z, an.y * at.z + as.x, an.z * at.z + c,    0.f,
@@ -205,8 +240,8 @@ SmlMat4 SmlRotate(SmlVec3 axis, float angle) {
     };
 }
 
-SmlMat4 SmlScale(SmlVec3 scale) {
-    return (SmlMat4) {
+sml_mat4_t sml_scale(sml_vec3_t scale) {
+    return (sml_mat4_t) {
         .m00 = scale.x,
         .m11 = scale.y,
         .m22 = scale.z,
@@ -214,22 +249,22 @@ SmlMat4 SmlScale(SmlVec3 scale) {
     };
 }
 
-SmlMat4 SmlLookAt(SmlVec3 eye, SmlVec3 target, SmlVec3 up) {
-    SmlVec3 f = SmlNormalizeVec3(SmlSubVec3(target, eye));
-    SmlVec3 r = SmlNormalizeVec3(SmlCrossVec3(f, up));
-    SmlVec3 u = SmlCrossVec3(r, f);
-    return (SmlMat4){
+sml_mat4_t sml_lookat(sml_vec3_t eye, sml_vec3_t target, sml_vec3_t up) {
+    sml_vec3_t f = sml_vec3_normalize(sml_vec3_sub(target, eye));
+    sml_vec3_t r = sml_vec3_normalize(sml_vec3_cross(f, up));
+    sml_vec3_t u = sml_vec3_cross(r, f);
+    return (sml_mat4_t){
         r.x, u.x, -f.x, 0.0f,
         r.y, u.y, -f.y, 0.0f,
         r.z, u.z, -f.z, 0.0f,
-        -SmlDotVec3(r, eye), -SmlDotVec3(u, eye), -SmlDotVec3(f, eye), 1.0f
+        -sml_vec3_dot(r, eye), -sml_vec3_dot(u, eye), -sml_vec3_dot(f, eye), 1.0f
     };
 }
 
-SmlMat4 SmlPerspective(float fov, float aspect, float near, float far) {
+sml_mat4_t sml_perspective(float fov, float aspect, float near, float far) {
     float nf  = 1.f / (near - far);
-    fov = 1.f / SmlTanf(fov * 0.5f);
-    return (SmlMat4){
+    fov = 1.f / sml_tanf(fov * 0.5f);
+    return (sml_mat4_t){
         .m00 = fov / aspect,
         .m11 = fov,
         .m22 = (near + far) * nf,
@@ -238,11 +273,11 @@ SmlMat4 SmlPerspective(float fov, float aspect, float near, float far) {
     };
 }
 
-SmlMat4 SmlOrthographic(float left, float right, float bottom, float top, float near, float far) {
+sml_mat4_t sml_orthographic(float left, float right, float bottom, float top, float near, float far) {
     float rl =  1.f / (right - left);
     float tb =  1.f / (top - bottom);
     float fn = -1.f / (far - near);
-    return (SmlMat4){
+    return (sml_mat4_t){
         .m00 = 2.f * rl,
         .m11 = 2.f * tb,
         .m22 = 2.f * fn,
@@ -253,4 +288,4 @@ SmlMat4 SmlOrthographic(float left, float right, float bottom, float top, float 
     };
 }
 
-#endif // SML_IMPLEMENTATION
+#endif // SML_IMPL
